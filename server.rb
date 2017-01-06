@@ -50,7 +50,7 @@ def hint_generator(word)
   	#generates a random letter between a - z
   	newLetter = (rand( ("a".ord)..("z".ord) )).chr
   	#adds that letter to target_word_letters if the letter isn't already included
-  	target_word_letters.insert(rand(target_word_letters.length), newLetter) unless target_word_letters.include?(newLetter)
+  	target_word_letters.insert(rand(target_word_letters.length), newLetter) if !word.include?(newLetter)
 
   end
   settings.hint = target_word_letters
@@ -92,7 +92,7 @@ def word_check(guess)
 		(settings.target_word.length).times { guess_status << "__" }
 		settings.guess_status = guess_status.join(" ")
 		
-		settings.response = "Enter in a letter to get started. You only have 5 lives. Use them wisely if you can :). This response will change to give you feedback. Enjoy!"
+		settings.response = "Enter in a letter to get started. You only have 5 lives. Use them wisely if you can :). This text will change to give you sarcastic responses as you embark on your journey. The footer will give you feedback on if your input was correct! Enjoy!"
 		return
 	end
 	guess.downcase!
