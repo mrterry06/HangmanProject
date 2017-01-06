@@ -1,11 +1,12 @@
-require 'bundler/setup'
-require 'sinatra'
 
+require 'sinatra'
+require 'sinatra/reloader'
 # Settings
 set :diff, nil
 set :target_word, nil
 set :guess_status, nil
 set :response, nil
+set :simple_response, nil
 set :lives, nil
 set :hint, nil
 
@@ -77,6 +78,7 @@ def set_difficulty(diff)
 		end
 		words.map! { |val| val.chomp }
 		settings.target_word = words[rand(words.length)]
+		settings.simple_response = "Good Luck"
 		hint_generator(settings.target_word)
 	end 
 
@@ -89,6 +91,7 @@ def word_check(guess)
 		settings.lives = 5
 		(settings.target_word.length).times { guess_status << "__" }
 		settings.guess_status = guess_status.join(" ")
+		
 		settings.response = "Enter in a letter to get started. You only have 5 lives. Use them wisely if you can :). This response will change to give you feedback. Enjoy!"
 		return
 	end
@@ -98,6 +101,7 @@ def word_check(guess)
 	if settings.guess_status.include?(guess) || @@guesses.include?(guess)
 
 		settings.response = ( guess != '' ? "You already tried that :P" : "Make sure you enter a value" )
+		settings.simple_response = "Enter a value"
 		redirect_check(true) 
 		return
 	end
@@ -113,10 +117,12 @@ def word_check(guess)
 		end
 		@@guesses << guess
 		settings.guess_status = guess_status_arr.join(" ")
+		settings.simple_response = "Right"
 	else
 		redirect_check(true)
 		settings.response = Responses.wrong
 		settings.lives -= 1
+		settings.simple_response = "Wrong"
 		@@guesses << guess
 	end
 	
@@ -136,6 +142,9 @@ get '/' do
 end
 
 get '/play' do
+	
+	redirect to('/') if settings.target_word.nil?
+
 	word_check(params['guess'])
 	erb :play, 
 		:locals => { 
@@ -143,7 +152,8 @@ get '/play' do
 			:guess_status => settings.guess_status, 
 			:response => settings.response, 
 			:lives => settings.lives.to_i, 
-			:hint => settings.hint 
+			:hint => settings.hint,
+			:simple_response => settings.simple_response
 		}
 end
 

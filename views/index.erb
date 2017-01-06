@@ -8,29 +8,64 @@
 	<link rel="stylesheet" type="text/css" href="/styles.css">
 	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap-theme.min.css">
-</head>
-<body>
-	<div class="container">
-		<h1>Let's Play Hangman!</h1>
-		<hr>
-		<p class="headers">Welcome! This is a classic version of Hangman to test your luck! Select a difficulty below to get started. To help you warm up, the levels Easy and Medium will have hints included. There will be more instructions and a bit of humor mixed responses once you choose a level and begin. Thanks for playing!</p>
-		<h3 class="headers">Select A Difficulty:</h3>
-		<form class="initial-form">
-			
-			<input type="radio" name="difficulty" value="3" id="easy" checked>
-			<label for="easy"> Easy(3 Letters)	</label>
-			
-			<input type="radio" name="difficulty" value="5"> 
-			<label for="medium">Medium(5 Letters)</label>
-			
-			<input type="radio" name="difficulty" value="8" id="hard">
-			<label for="hard">Hard(8 Letters)</label> 
-			
-			<input type="radio" name="difficulty" value="9" id="legendary"> 
-			<label for="legendary">Legendary(9 Letters)</label>
+	<style type="text/css">
+		
+		.intro {
+			font-weight: bold;
+			font-size: 1.5em;
+			text-align: center;
 
-			<input id="submit-button" class="submit-button btn btn-default" type="submit" value="Lets Go!">
-		</form>
+		}
+
+		#main-head {
+			background-color: black;
+			color: white;
+			width: 100%;
+
+		}
+
+		.difficulty-selection {
+			background-color: rgb(255, 255, 255);
+			border: 1px solid;
+			border-radius: 8px;
+			padding-bottom: 20px;
+		}
+
+		.submit-button {
+			height: 45px;
+			width: 150px;
+			font-size: 20px;
+		}
+
+		form {
+			padding-bottom: 20px;
+		}
+	</style>
+</head>
+<body style='background-image: url("/imgs/hangman1.jpeg"); background-color: #fff'>
+	<div class="container">
+		<h1 id="main-head">Let's Play Hangman!</h1>
+		<hr>
+		<div class="difficulty-selection">
+			<p class="intro">Welcome! This is a classic version of Hangman to test your luck! Select a difficulty below to get started. To help you warm up, the levels Easy and Medium will have hints included. There will be more instructions and a bit of humor mixed responses once you choose a level and begin. Thanks for playing!</p>
+			<h3 class="headers">Select A Difficulty:</h3>
+			<form class="initial-form">
+				
+				<input type="radio" name="difficulty" value="3" id="easy" checked>
+				<label for="easy"> Easy(3 Letters)	</label>
+				
+				<input type="radio" name="difficulty" value="5"> 
+				<label for="medium">Medium(5 Letters)</label>
+				
+				<input type="radio" name="difficulty" value="8" id="hard">
+				<label for="hard">Hard(8 Letters)</label> 
+				
+				<input type="radio" name="difficulty" value="9" id="legendary"> 
+				<label for="legendary">Legendary(9 Letters)</label>
+
+				<input id="submit-button" class="submit-button btn btn-default" type="submit" value="Lets Play!">
+			</form>
+		</div>
 		<hr>
 	</div>
 </body>
