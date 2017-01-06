@@ -1,6 +1,6 @@
 
 require 'sinatra'
-require 'sinatra/reloader'
+#require 'sinatra/reloader'
 # Settings
 set :diff, nil
 set :target_word, nil
