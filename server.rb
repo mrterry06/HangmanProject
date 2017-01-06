@@ -1,6 +1,6 @@
 
 require 'sinatra'
-#require 'sinatra/reloader'
+require 'sinatra/reloader'
 
 
 
@@ -121,8 +121,12 @@ end
 
 
 
-#ROUTES
+#ROUTES/CONFIGURATIONS
 
+
+configure do
+	set :target_word => nil, :response => nil, :hint => nil
+end
 
 get '/' do
 	# Checks to see if difficulty parameter is set, if set, redirects to '/play' for user to play 
