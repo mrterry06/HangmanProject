@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hangman</title>
+	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="/styles.css"></link>
+</head>
+<body>
+	<div class="container">
+		<h1 class="headers"> Hangman</h1>
+		<hr>
+		<h3 class="headers" >Mystery Word Status:</h3>
+		<h2 class="headers"><%=  !lives.zero? ? ( guess_status.gsub(" ", '') == word ? "You Won! The word was '#{word}'" : guess_status ) :  "You Lost :( the word was '#{word}'"  %></h2>
+		
+		<div>
+			<form>
+				<input class="guess-field" type="text" maxlength="1" placeholder=":)..Try" name="guess" autofocus><br>
+				<% if  guess_status.gsub(" ", '') == word || lives.zero? %>
+					<a class="play-again btn btn-default" href="/">Play Again!</a>
+				<% else %>
+					<input class="guess-button" type="submit" value="Attempt!" required>
+				<% end %>
+			</form>
+		</div>
+		<hr>
+		
+		<div class="user-stats">
+			<div>
+				<b style="font-size: 20px;">Instructions/Feedback:</b>
+				<%= response %>
+			</div>
+			<div>
+				<b style="font-size: 20px;">Stats:</b> you have <span><%= lives if !lives.nil? %></span> life/lives left
+			</div>
+		</div>
+		<% if  word.length < 8 %>
+		<hr>
+		<div>
+			<h3 class="headers">Hints:</h3>
+			<p class="headers">Below you have an array(Group) of letters that include every letter from our mystery word and then some to make it a bit of fun for you :)</p>
+			<h2 class="headers"><%= hint %></h2>
+		</div>
+		<% end %>
+	</div>	
+</body>
+
+</html>
