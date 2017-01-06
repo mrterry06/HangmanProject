@@ -1,5 +1,6 @@
+require 'bundler/setup'
 require 'sinatra'
-require 'sinatra/reloader'
+
 # Settings
 set :diff, nil
 set :target_word, nil
