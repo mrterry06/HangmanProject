@@ -31,6 +31,10 @@
 			position: relative;
 		}
 
+		.play-again {
+			margin-bottom: 20px;
+		}
+
 		#plain-response {
 			position: fixed;
 			width: 100%;
@@ -41,6 +45,7 @@
 			z-index: 5;
 			font-size: 2em;
 			bottom: 0;
+			left: 0;
 		}
 
 		.result-img {
@@ -54,70 +59,74 @@
 			margin: 0 auto;
 		}
 
-
+		.hints * {
+			text-align: center;
+		}
 
     </style>
 </head>
 <body style='background-image: url("/imgs/hangman2.jpg"); background-color: #fff'>
-	<%  if  guess_status.gsub(" ", '') == word || lives.zero? %>
 	<div class="container" style="background-color: rgb(255, 255, 255);">
+	<%  if  guess_status.gsub(" ", '') == settings.target_word || lives.zero? %>
+		<!-- Once the game is over, this section appears to display their results -->
 		<h1 class="headers"> Hangman</h1>
-		<% if guess_status.gsub(" ", '') == word %>
+		<% if guess_status.gsub(" ", '') == settings.target_word %>
 			
 			<div class="result-img">	
 				<img style="width: 100%" src="/imgs/champion.jpg">
-				<h3>You Champion! You Won! The Word was '<%= word %>'</h3>
+				<h3>You Champion! You Won! The Word was '<%= settings.target_word %>'</h3>
 			</div>
 
 		<% else %>
 			
 			<div class="result-img">
 				<img src="/imgs/lose.jpg">
-				<h3>You Lost! Ohh Noo! The Word was '<%= word %>' Get Revenge!</h3>
+				<h3>You Lost! Ohh Noo! The Word was '<%= settings.target_word %>' Get Revenge!</h3>
 			</div>
 
 		<% end %>
 		<a class="play-again btn btn-default" href="/">Play Again!</a>	
-	</div>	
+
 	<% else %>
-		<div class="container">
-			<h1 class="headers"> Hangman</h1>
-			<hr>
-			<div class="main-content">
-				<h3 class="headers" >Mystery Word Status:</h3>
-				<h2 class="headers"><%=  !lives.zero? ? ( guess_status.gsub(" ", '') == word ? "You Won! The word was '#{word}'" : guess_status ) :  "You Lost :( the word was '#{word}'"  %></h2>
-				<div class="form-container">
-					<form>
-						<input class="guess-field" type="text" maxlength="1" placeholder=":)..Try" name="guess" autofocus><br>
-							
-							<input class="guess-button" type="submit" value="Attempt!" required>
-					</form>
-				</div>
-				<hr>
-				
-				<div class="user-stats">
-					<div>
-						<b style="font-size: 20px;">Instructions/Feedback:</b>
-						<%= response %>
-					</div>
-					<div>
-						<b style="font-size: 20px;">Stats:</b> you have <span><%= lives if !lives.nil? %></span> life/lives left
-					</div>		
-				</div>
-				<% if  word.length < 8 %>
-				<hr>
-				<div class="hints">
-					<h3 class="headers">Hints:</h3>
-					<p class="headers">Below you have an array(Group) of letters that include every letter from our mystery word and then some to make it a bit of fun for you :)</p>
-					<h2 class="headers"><%= hint %></h2>
-				</div>
-				<% end %>
+		<h1 class="headers"> Hangman</h1>
+		
+		<div class="main-content">
+			<h3 class="headers" >Mystery Word Status:</h3>
+			<h2 class="headers"><%=  guess_status  %></h2>
+			<div class="form-container">
+				<form>
+					<input class="guess-field" type="text" maxlength="1" placeholder=":)..Try" name="guess" autofocus><br>
+						
+						<input class="guess-button" type="submit" value="Attempt!" required>
+				</form>
 			</div>
-		</div>	
-		<div id="plain-response">
-			<%= simple_response %>
+			<hr>
+			
+			<div class="user-stats">
+				<div>
+					<b style="font-size: 20px;">Instructions/Feedback:</b>
+					<%= settings.response %>
+				</div>
+				<div>
+					<b style="font-size: 20px;">Stats:</b> you have <span><%= lives if !lives.nil? %></span> life/lives left
+				</div>		
+			</div>
+			<% if  settings.target_word.length < 8 %>
+			<hr>
+			<div class="hints">
+				<h3>Hints:</h3>
+				<p>Below you have an array(Group) of letters that include every letter from our mystery word and then some to make it a bit of fun for you :)</p>
+				<h2><%= settings.hint %></h2>
+			</div>
+			<% end %>
 		</div>
+
+		<div id="plain-response" >
+			<%= footer_res %>
+		</div>
+	
 	<% end %>
+	</div>	
 </body>
 
 </html>

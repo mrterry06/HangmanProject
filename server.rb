@@ -1,14 +1,8 @@
 
 require 'sinatra'
-#require 'sinatra/reloader'
-# Settings
-set :diff, nil
-set :target_word, nil
-set :guess_status, nil
-set :response, nil
-set :simple_response, nil
-set :lives, nil
-set :hint, nil
+require 'sinatra/reloader'
+
+
 
 #ClASSES
 
@@ -50,7 +44,7 @@ def hint_generator(word)
   	#generates a random letter between a - z
   	newLetter = (rand( ("a".ord)..("z".ord) )).chr
   	#adds that letter to target_word_letters if the letter isn't already included
-  	target_word_letters.insert(rand(target_word_letters.length), newLetter) if !word.include?(newLetter)
+  	target_word_letters.insert(rand(target_word_letters.length), newLetter) if !target_word_letters.include?(newLetter)
 
   end
   settings.hint = target_word_letters
@@ -60,9 +54,7 @@ end
 def redirect_check(doMatchCheck = false)
 	#doMatchCheck, if true, will check to see if our target_word and guess word match, will redirect if so
 	#This is to handle if user gets words with remaining lives
-	redirect to("/") if settings.lives <= 0  
-	redirect to("/") if ( settings.target_word == settings.guess_status.gsub(" ", "") ) && doMatchCheck
-
+	redirect to("/") if $lives <= 0 || ( ( settings.target_word == $guess_status.gsub(" ", "") ) && doMatchCheck ) 
 end
 
 
@@ -76,9 +68,10 @@ def set_difficulty(diff)
 		words = @@allWords.select do |line|
 			line.length == diff.to_i + 1
 		end
+		#chomp here instead of within readlines method to prevent uneeded operations
 		words.map! { |val| val.chomp }
 		settings.target_word = words[rand(words.length)]
-		settings.simple_response = "Good Luck"
+		$footer_res = "Good Luck"
 		hint_generator(settings.target_word)
 	end 
 
@@ -88,41 +81,38 @@ end
 def word_check(guess)
 	if guess.nil?
 		@@guesses, guess_status = Array.new, Array.new 
-		settings.lives = 5
+		$lives = 5
 		(settings.target_word.length).times { guess_status << "__" }
-		settings.guess_status = guess_status.join(" ")
+		$guess_status = guess_status.join(" ")
 		
-		settings.response = "Enter in a letter to get started. You only have 5 lives. Use them wisely if you can :). This text will change to give you sarcastic responses as you embark on your journey. The footer will give you feedback on if your input was correct! Enjoy!"
+		settings.response = "Enter in a letter to get started. You only have 5 lives. Use them wisely if you can :). 
+		This text will change to give you sarcastic responses as you embark on your journey. The footer will give you 
+		feedback on if your input was correct! Enjoy!"
 		return
 	end
 	guess.downcase!
 
 
-	if settings.guess_status.include?(guess) || @@guesses.include?(guess)
+	if $guess_status.include?(guess) || @@guesses.include?(guess)
 
-		settings.response = ( guess != '' ? "You already tried that :P" : "Make sure you enter a value" )
-		settings.simple_response = "Enter a value"
+		 guess != '' ? ( $footer_res, settings.response = "You already tried that", "You already tried that :P")
+		 			 : ( $footer_res, settings.response = "Enter a value", "It is wise to enter a value" ) 
 		redirect_check(true) 
 		return
 	end
 
 
 	if settings.target_word.include?(guess)
-		
-		settings.response = Responses.right
-		guess_status_arr = settings.guess_status.split(" ")
-		guess_status_arr.map!.with_index do |val, i|
+		guess_status_arr = $guess_status.split(" ").map.with_index do |val, i|
 			val = guess  unless settings.target_word[i] != guess
 			val
 		end
 		@@guesses << guess
-		settings.guess_status = guess_status_arr.join(" ")
-		settings.simple_response = "Right"
+		$guess_status, $footer_res, settings.response = guess_status_arr.join(" "), "Right", Responses.right
 	else
 		redirect_check(true)
-		settings.response = Responses.wrong
-		settings.lives -= 1
-		settings.simple_response = "Wrong"
+		settings.response, $footer_res	 = Responses.wrong, "Wrong"
+		$lives -= 1
 		@@guesses << guess
 	end
 	
@@ -147,13 +137,10 @@ get '/play' do
 
 	word_check(params['guess'])
 	erb :play, 
-		:locals => { 
-			:word => settings.target_word, 
-			:guess_status => settings.guess_status, 
-			:response => settings.response, 
-			:lives => settings.lives.to_i, 
-			:hint => settings.hint,
-			:simple_response => settings.simple_response
+		:locals => {  
+			:guess_status => $guess_status,  
+			:lives => $lives.to_i, 
+			:footer_res => $footer_res
 		}
 end
 
