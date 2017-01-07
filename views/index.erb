@@ -8,19 +8,23 @@
 	<link rel="stylesheet" type="text/css" href="/styles.css">
 	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap-theme.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Archivo+Narrow|Josefin+Sans|Karla|Oswald" rel="stylesheet">
 	<style type="text/css">
 		
+
 		.intro {
 			font-weight: bold;
-			font-size: 1.5em;
+			font-size: 22px;
 			text-align: center;
+			font-family: 'Archivo Narrow', sans-serif;
 
 		}
 
-		#main-head {
+		#main-head, .form-header {
 			background-color: black;
 			color: white;
 			width: 100%;
+			font-family: 'Oswald', sans-serif;
 
 		}
 
@@ -40,14 +44,34 @@
 		form {
 			padding-bottom: 20px;
 		}
+
+		.difficulty-selection img {
+			position: absolute;
+			height: 200px;
+			top: 0;
+		}
+		.difficulty-selection img:first-of-type {
+			left: 30px;
+		}
+
+		.difficulty-selection img:last-of-type {
+			right: 30px;
+		}
+
+		.initial-form {
+			position: relative;
+			font-family: 'Karla', sans-serif;
+			font-size: 20px;
+		}
 	</style>
 </head>
-<body style='background-image: url("/imgs/hangman1.jpeg"); background-color: #fff'>
+<body style='background-image: url("/imgs/hangman1.jpeg");'>
 	<div class="container">
 		<h1 id="main-head">Let's Play Hangman!</h1>
 		<div class="difficulty-selection">
+			<h3 class="headers form-header">Introduction:</h3>
 			<p class="intro">Welcome! This is a classic version of Hangman to test your luck! Select a difficulty below to get started. To help you warm up, the levels Easy and Medium will have hints included. There will be more instructions and a bit of humor mixed responses once you choose a level and begin. Thanks for playing!</p>
-			<h3 class="headers">Select A Difficulty:</h3>
+			<h3 class="headers form-header">Select A Difficulty:</h3>
 			<form class="initial-form">
 				
 				<input type="radio" name="difficulty" value="3" id="easy" checked>

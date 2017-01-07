@@ -54,9 +54,13 @@ end
 def redirect_check(doMatchCheck = false)
 	#doMatchCheck, if true, will check to see if our target_word and guess word match, will redirect if so
 	#This is to handle if user gets words with remaining lives
-	redirect to("/") if $lives <= 0 || ( ( settings.target_word == $guess_status.gsub(" ", "") ) && doMatchCheck ) 
+	redirect to("/") if $lives  >= 5 || ( ( settings.target_word == $guess_status.gsub(" ", "") ) && doMatchCheck ) 
 end
 
+def change_hang_status(len)
+	all_chr = "HANG!"
+	$hang_status = all_chr[0,len]
+end
 
 def set_difficulty(diff)
 	
@@ -81,13 +85,13 @@ end
 def word_check(guess)
 	if guess.nil?
 		@@guesses, guess_status = Array.new, Array.new 
-		$lives = 5
+		$lives, $hang_status = 0, ""
 		(settings.target_word.length).times { guess_status << "__" }
 		$guess_status = guess_status.join(" ")
 		
-		settings.response = "Enter in a letter to get started. You only have 5 lives. Use them wisely if you can :). 
-		This text will change to give you sarcastic responses as you embark on your journey. The footer will give you 
-		feedback on if your input was correct! Enjoy!"
+		settings.response = "Enter in a letter to get started. Do not spell 'HANG!'. Each time you guess a wrong letter, you 
+		gain a letter. This text will change to give you sarcastic responses as you embark on your journey. The footer will give you 
+		feedback on if your input was correct! The World is depending on you! Enjoy!"
 		return
 	end
 	guess.downcase!
@@ -112,10 +116,10 @@ def word_check(guess)
 	else
 		redirect_check(true)
 		settings.response, $footer_res	 = Responses.wrong, "Wrong"
-		$lives -= 1
+		$lives += 1
 		@@guesses << guess
 	end
-	
+	change_hang_status($lives)
 
 end
 
@@ -144,6 +148,7 @@ get '/play' do
 		:locals => {  
 			:guess_status => $guess_status,  
 			:lives => $lives.to_i, 
+			:status => $hang_status,
 			:footer_res => $footer_res
 		}
 end

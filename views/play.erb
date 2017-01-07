@@ -4,6 +4,7 @@
 	<title>Hangman</title>
 	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap-theme.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Archivo+Narrow|Josefin+Sans|Karla|Oswald" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/styles.css"></link>
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,6 +16,13 @@
 			background-color: black;
 			color: white;
 			width: 100%;
+    	}
+
+    	.main-heads {
+    		background-color: black;
+			color: white;
+			width: 100%;
+			font-family: 'Oswald', sans-serif;
     	}
 
     	.main-content {
@@ -34,6 +42,20 @@
 		.play-again {
 			margin-bottom: 20px;
 		}
+		.hints p {
+			font-family: 'Karla', sans-serif;
+			font-size: 15px;
+		}
+
+		.user-stats div {
+			width: 100%;
+		}
+
+
+		.user-stats b {
+			font-family: 'Oswald';
+			text-align: center;
+		}
 
 		#plain-response {
 			position: fixed;
@@ -46,6 +68,7 @@
 			font-size: 2em;
 			bottom: 0;
 			left: 0;
+			border-top: 1px solid white;
 		}
 
 		.result-img {
@@ -67,31 +90,31 @@
 </head>
 <body style='background-image: url("/imgs/hangman2.jpg"); background-color: #fff'>
 	<div class="container" style="background-color: rgb(255, 255, 255);">
-	<%  if  guess_status.gsub(" ", '') == settings.target_word || lives.zero? %>
+	<%  if  guess_status.gsub(" ", '') == settings.target_word || lives == 5 %>
 		<!-- Once the game is over, this section appears to display their results -->
-		<h1 class="headers"> Hangman</h1>
+		<h1 class="headers main-heads"> Hangman</h1>
 		<% if guess_status.gsub(" ", '') == settings.target_word %>
 			
 			<div class="result-img">	
 				<img style="width: 100%" src="/imgs/champion.jpg">
-				<h3>You Champion! You Won! The Word was '<%= settings.target_word %>'</h3>
+				<h3>You <span class="main-heads"> Champion!</span> You Won! The Word was '<%= settings.target_word %>'</h3>
 			</div>
 
 		<% else %>
 			
 			<div class="result-img">
 				<img src="/imgs/lose.jpg">
-				<h3>You Lost! Ohh Noo! The Word was '<%= settings.target_word %>' Get Revenge!</h3>
+				<h3> <span class="main-heads">"HANG!"</span> You Lost! Ohh Noo! The Word was '<%= settings.target_word %>' <span class="main-heads">GET REVENGE!</span></h3>
 			</div>
 
 		<% end %>
 		<a class="play-again btn btn-default" href="/">Play Again!</a>	
 
 	<% else %>
-		<h1 class="headers"> Hangman</h1>
+		<h1 class="headers main-heads"> Hangman</h1>
 		
 		<div class="main-content">
-			<h3 class="headers" >Mystery Word Status:</h3>
+			<h3 class="headers" style="font-family: 'Archivo'" >Mystery Word Status:</h3>
 			<h2 class="headers"><%=  guess_status  %></h2>
 			<div class="form-container">
 				<form>
@@ -104,19 +127,19 @@
 			
 			<div class="user-stats">
 				<div>
-					<b style="font-size: 20px;">Instructions/Feedback:</b>
-					<%= settings.response %>
+					<b  style="font-size: 20px;">Instructions/Feedback:</b>
+					<p style=" font-size: 15px; font-family: 'Karla';" ><%= settings.response %></p>
 				</div>
 				<div>
-					<b style="font-size: 20px;">Stats:</b> you have <span><%= lives if !lives.nil? %></span> life/lives left
+					<b style="font-size: 20px;">Status:</b>  <span class="main-heads" ><%= status if !lives.nil? %></span> 
 				</div>		
 			</div>
 			<% if  settings.target_word.length < 8 %>
 			<hr>
-			<div class="hints">
-				<h3>Hints:</h3>
-				<p>Below you have an array(Group) of letters that include every letter from our mystery word and then some to make it a bit of fun for you :)</p>
-				<h2><%= settings.hint %></h2>
+			<div class="hints main-heads">
+				<h2>Hints:</h2>
+				<p>Below you have an array(Group) of letters that includes every letter from our mystery word and then some to make it a bit of fun for you :)</p>
+				<h3><%= settings.hint %></h3>
 			</div>
 			<% end %>
 		</div>
