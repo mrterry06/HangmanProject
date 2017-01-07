@@ -90,21 +90,21 @@
 </head>
 <body style='background-image: url("/imgs/hangman2.jpg"); background-color: #fff'>
 	<div class="container" style="background-color: rgb(255, 255, 255);">
-	<%  if  guess_status.gsub(" ", '') == settings.target_word || lives == 5 %>
+	<%  if  guess_status.gsub(" ", '') == target_word || lives == 5 %>
 		<!-- Once the game is over, this section appears to display their results -->
 		<h1 class="headers main-heads"> Hangman</h1>
-		<% if guess_status.gsub(" ", '') == settings.target_word %>
+		<% if guess_status.gsub(" ", '') == target_word %>
 			
 			<div class="result-img">	
 				<img style="width: 100%" src="/imgs/champion.jpg">
-				<h3>You <span class="main-heads"> Champion!</span> You Won! The Word was '<%= settings.target_word %>'</h3>
+				<h3>You <span class="main-heads"> Champion!</span> You Won! The Word was '<%= target_word %>'</h3>
 			</div>
 
 		<% else %>
 			
 			<div class="result-img">
 				<img src="/imgs/lose.jpg">
-				<h3> <span class="main-heads">"HANG!"</span> You Lost! Ohh Noo! The Word was '<%= settings.target_word %>' <span class="main-heads">GET REVENGE!</span></h3>
+				<h3> <span class="main-heads">"HANG!"</span> You Lost! Ohh Noo! The Word was '<%= target_word %>' <span class="main-heads">GET REVENGE!</span></h3>
 			</div>
 
 		<% end %>
@@ -128,7 +128,7 @@
 			<div class="user-stats">
 				<div>
 					<b  style="font-size: 20px;">Instructions/Feedback:</b>
-					<p style=" font-size: 15px; font-family: 'Karla';" ><%= settings.response %></p>
+					<p style=" font-size: 15px; font-family: 'Karla';" ><%= response %></p>
 				</div>
 				<div>
 					<b style="font-size: 20px;">Status:</b>  <span class="main-heads" ><%= status if !lives.nil? %></span> 
@@ -139,7 +139,7 @@
 			<div class="hints main-heads">
 				<h2>Hints:</h2>
 				<p>Below you have an array(Group) of letters that includes every letter from our mystery word and then some to make it a bit of fun for you :)</p>
-				<h3><%= settings.hint %></h3>
+				<h3><%= hint %></h3>
 			</div>
 			<% end %>
 		</div>

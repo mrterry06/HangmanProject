@@ -47,14 +47,14 @@ def hint_generator(word)
   	target_word_letters.insert(rand(target_word_letters.length), newLetter) if !target_word_letters.include?(newLetter)
 
   end
-  settings.hint = target_word_letters
+  $hint = target_word_letters
 end
 
 
 def redirect_check(doMatchCheck = false)
 	#doMatchCheck, if true, will check to see if our target_word and guess word match, will redirect if so
 	#This is to handle if user gets words with remaining lives
-	redirect to("/") if $lives  >= 5 || ( ( settings.target_word == $guess_status.gsub(" ", "") ) && doMatchCheck ) 
+	redirect to("/") if $lives  >= 5 || ( ( $target_word == $guess_status.gsub(" ", "") ) && doMatchCheck ) 
 end
 
 def change_hang_status(len)
@@ -74,9 +74,9 @@ def set_difficulty(diff)
 		end
 		#chomp here instead of within readlines method to prevent uneeded operations
 		words.map! { |val| val.chomp }
-		settings.target_word = words[rand(words.length)]
+		$target_word = words[rand(words.length)]
 		$footer_res = "Good Luck"
-		hint_generator(settings.target_word)
+		hint_generator($target_word)
 	end 
 
 end
@@ -86,10 +86,10 @@ def word_check(guess)
 	if guess.nil?
 		@@guesses, guess_status = Array.new, Array.new 
 		$lives, $hang_status = 0, ""
-		(settings.target_word.length).times { guess_status << "__" }
+		($target_word.length).times { guess_status << "__" }
 		$guess_status = guess_status.join(" ")
 		
-		settings.response = "Enter in a letter to get started. Do not spell 'HANG!'. Each time you guess a wrong letter, you 
+		$response = "Enter in a letter to get started. Do not spell 'HANG!'. Each time you guess a wrong letter, you 
 		gain a letter. This text will change to give you sarcastic responses as you embark on your journey. The footer will give you 
 		feedback on if your input was correct! The World is depending on you! Enjoy!"
 		return
@@ -99,23 +99,23 @@ def word_check(guess)
 
 	if $guess_status.include?(guess) || @@guesses.include?(guess)
 
-		 guess != '' ? ( $footer_res, settings.response = "You already tried that", "You already tried that :P")
-		 			 : ( $footer_res, settings.response = "Enter a value", "It is wise to enter a value" ) 
+		 guess != '' ? ( $footer_res, $response = "You already tried that", "You already tried that :P")
+		 			 : ( $footer_res, $response = "Enter a value", "It is wise to enter a value" ) 
 		redirect_check(true) 
 		return
 	end
 
 
-	if settings.target_word.include?(guess)
+	if $target_word.include?(guess)
 		guess_status_arr = $guess_status.split(" ").map.with_index do |val, i|
-			val = guess  unless settings.target_word[i] != guess
+			val = guess  unless $target_word[i] != guess
 			val
 		end
 		@@guesses << guess
-		$guess_status, $footer_res, settings.response = guess_status_arr.join(" "), "Right", Responses.right
+		$guess_status, $footer_res, $response = guess_status_arr.join(" "), "Right", Responses.right
 	else
 		redirect_check(true)
-		settings.response, $footer_res	 = Responses.wrong, "Wrong"
+		$response, $footer_res	 = Responses.wrong, "Wrong"
 		$lives += 1
 		@@guesses << guess
 	end
@@ -125,13 +125,7 @@ end
 
 
 
-#ROUTES/CONFIGURATIONS
-
-
-configure do
-	set :target_word => nil, :response => nil, :hint => nil
-end
-
+#ROUTES
 get '/' do
 	# Checks to see if difficulty parameter is set, if set, redirects to '/play' for user to play 
 	set_difficulty(params['difficulty'])
@@ -141,15 +135,18 @@ end
 
 get '/play' do
 	
-	redirect to('/') if settings.target_word.nil?
+	redirect to('/') if $target_word.nil?
 
 	word_check(params['guess'])
 	erb :play, 
 		:locals => {  
-			:guess_status => $guess_status,  
+			:guess_status => $guess_status,
+			:response => $response,  
 			:lives => $lives.to_i, 
 			:status => $hang_status,
-			:footer_res => $footer_res
+			:footer_res => $footer_res,
+			:hint => $hint,
+			:target_word => $target_word
 		}
 end
 
