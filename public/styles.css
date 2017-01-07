@@ -7,7 +7,12 @@
 			background-color: black;
 		}
 
-
+		.initial-form {
+			padding-bottom: 20px;
+			position: relative;
+			font-family: 'Karla', sans-serif;
+			font-size: 20px;
+		}
 
 		.initial-form label {
 			width: 100%;
@@ -16,6 +21,32 @@
 			vertical-align: middle;
 
 		}
+
+		.initial-form input[type=radio] {
+			height: 30px;
+			width: 30px;
+			display: block;
+			margin: 0 auto;
+		}
+
+
+		#main-head, .form-header {
+			background-color: black;
+			color: white;
+			width: 100%;
+			font-family: 'Oswald', sans-serif;
+
+		}
+
+
+		.intro {
+			font-weight: bold;
+			font-size: 22px;
+			text-align: center;
+			font-family: 'Archivo Narrow', sans-serif;
+
+		}
+
 
 		.guess-field {
 			height: 70px;
@@ -44,13 +75,6 @@
 			border: solid lime;
 		}
 
-		.initial-form input[type=radio] {
-			height: 30px;
-			width: 30px;
-			display: block;
-			margin: 0 auto;
-		}
-
 		.user-stats span {
 			font-weight: bolder;
 			font-size: 3em;
@@ -60,4 +84,103 @@
 		 #submit-button, .initial-form label, .guess-field, .guess-button, #show-hide-button {
 			display: block;
 			margin: 0 auto;
+		}
+
+
+
+		.difficulty-selection {
+			background-color: rgb(255, 255, 255);
+			border: 1px solid;
+			border-radius: 8px;
+			padding-bottom: 20px;
+		}
+
+		.submit-button {
+			height: 45px;
+			width: 150px;
+			font-size: 20px;
+		}
+
+	
+		.difficulty-selection img {
+			position: absolute;
+			height: 200px;
+			top: 0;
+		}
+		.difficulty-selection img:first-of-type {
+			left: 30px;
+		}
+
+		.difficulty-selection img:last-of-type {
+			right: 30px;
+		}
+
+		
+
+    	.main-heads {
+    		background-color: black;
+			color: white;
+			width: 100%;
+			font-family: 'Oswald', sans-serif;
+    	}
+
+    	.main-content {
+			background-color: rgb(255, 255, 255);
+			border: 1px solid;
+			border-radius: 8px;
+			padding-bottom: 100px;
+		}
+		.user-stats {
+			padding: 15px 15px 15px 15px;
+		}
+
+		.form-container {
+			position: relative;
+		}
+
+		.play-again {
+			margin-bottom: 20px;
+		}
+		.hints p {
+			font-family: 'Karla', sans-serif;
+			font-size: 15px;
+		}
+
+		.user-stats div {
+			width: 100%;
+		}
+
+
+		.user-stats b {
+			font-family: 'Oswald';
+			text-align: center;
+		}
+
+		#plain-response {
+			position: fixed;
+			width: 100%;
+			background-color: black;
+			height: 70px;
+			text-align: center;
+			color: white;
+			z-index: 5;
+			font-size: 2em;
+			bottom: 0;
+			left: 0;
+			border-top: 1px solid white;
+		}
+
+		.result-img {
+			position: relative;
+			display: block;
+			text-align: center;
+		}
+
+		.result-img img {
+			display: block;
+			margin: 0 auto;
+		}
+
+		.hints * {
+			text-align: center;
 		}
